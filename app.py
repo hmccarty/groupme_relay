@@ -21,7 +21,7 @@ def webhook():
     return "ok", 200
 
 def send_message(msg):
-    channels =  os.getenv('DISCORD_CHANNELS').split(' ')
+    channels =  os.getenv('DISCORD_CHANNELS').split('.')
 
     for guild in guilds:
         for channel in guild.channels:
