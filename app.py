@@ -20,13 +20,13 @@ def webhook():
     return "ok", 200
 
 def send_message(msg):
+    channel =  os.getenv('DISCORD_CHANNEL')
     url = "https://discordapp.com/api/channels/{}/messages".format(channel)
     headers= {
                 "Authorization":"Bot {}".format(os.getenv('DISCORD_TOKEN')),
                 "User-Agent":"GroupMeRelay",
                 "Content-Type":"application/json",
              }
-    channel =  os.getenv('DISCORD_CHANNEL')
     msg_json = json.dumps( { "content":msg } )
 
     r = requests.post(url, headers=headers, data=msg_json)
