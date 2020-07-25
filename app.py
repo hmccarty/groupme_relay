@@ -27,3 +27,4 @@ def send_message(msg):
     msg_json = json.dumps( { "content":msg } )
 
     r = requests.post(webhook, headers=headers, data=msg_json)
+    print (r)
