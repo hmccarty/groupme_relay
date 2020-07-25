@@ -14,7 +14,7 @@ def webhook():
     data = request.get_json()
 
     if data['name'] != 'Groupme-Relay':
-       msg = '{} sent "{} in the GroupMe".'.format(data['name'], data['text'])
+       msg = '{} sent "{}" in the GroupMe.'.format(data['name'], data['text'])
        send_message(msg)
 
     return "ok", 200
