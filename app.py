@@ -1,6 +1,6 @@
 import os
 import json
-import discord
+import requests
 
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -8,7 +8,6 @@ from urllib.request import Request, urlopen
 from flask import Flask, request
 
 app = Flask(__name__)
-client = discord.Client()
 
 @app.route('/', methods=['POST'])
 def webhook():
@@ -21,20 +20,13 @@ def webhook():
     return "ok", 200
 
 def send_message(msg):
-    channels =  os.getenv('DISCORD_CHANNELS').split('.')
+    url = "https://discordapp.com/api/channels/{}/messages".format(channel)
+    headers= {
+                "Authorization":"Bot {}".format(os.getenv('DISCORD_TOKEN')),
+                "User-Agent":"GroupMeRelay",
+                "Content-Type":"application/json",
+             }
+    channel =  os.getenv('DISCORD_CHANNEL')
+    msg_json = json.dumps( { "content":msg } )
 
-    for guild in guilds:
-        for channel in guild.channels:
-            if channel.name in channels:
-                channel.send(msg)
-    """
-    data = {
-        'bot_id' : os.getenv('GROUPME_BOT_ID'),
-        'text'   : msg,
-    }
-
-    request = Request(url, urlencode(data).encode())
-    json = urlopen(request).read().decode()
-    """
-
-client.run(os.getenv('DISCORD_TOKEN'))
+    r = requests.post(url, headers=headers, data=msg_json)
